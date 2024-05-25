@@ -3,9 +3,10 @@ const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const fs = require('fs');
 const XLSX = require('xlsx');
+const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = 8000;
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,26 +17,35 @@ app.use(express.static('public'));
 
 // Handle form submission
 app.post('/register', (req, res) => {
-    const { name, email } = req.body;
+    const { name, email, phoneNumber, nationality } = req.body;
+    console.log("phone is " + phoneNumber);
+    console.log("nat is "+nationality);
 
     // Append to Excel file
-    const filePath = './registrations.xlsx';
+    const filePath = path.join(__dirname, 'registrations.xlsx');
     let workbook;
     let worksheet;
-    if (fs.existsSync(filePath)) {
-        workbook = XLSX.readFile(filePath);
-        worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    } else {
-        workbook = XLSX.utils.book_new();
-        worksheet = XLSX.utils.json_to_sheet([]);
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Registrations');
+    try {
+        if (fs.existsSync(filePath)) {
+            workbook = XLSX.readFile(filePath);
+            worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        } else {
+            workbook = XLSX.utils.book_new();
+            worksheet = XLSX.utils.aoa_to_sheet([['Name', 'Phone Number', 'Nationality', 'Email']]);
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Registrations');
+        }
+
+        const newRow = [name, phoneNumber, nationality, email];
+        XLSX.utils.sheet_add_aoa(worksheet, [newRow], { origin: -1 });
+
+        XLSX.writeFile(workbook, filePath);
+
+        // Log successful write
+        console.log('Successfully wrote to Excel file');
+    } catch (error) {
+        console.error('Error writing to Excel file:', error);
+        return res.status(500).send('Error saving registration');
     }
-    const newRow = { Name: name, Email: email };
-    const worksheetData = XLSX.utils.sheet_to_json(worksheet);
-    worksheetData.push(newRow);
-    const newWorksheet = XLSX.utils.json_to_sheet(worksheetData);
-    workbook.Sheets[workbook.SheetNames[0]] = newWorksheet;
-    XLSX.writeFile(workbook, filePath);
 
     // Send confirmation email
     const transporter = nodemailer.createTransport({
@@ -55,7 +65,8 @@ app.post('/register', (req, res) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            return console.log(error);
+            console.error('Error sending email:', error);
+            return res.status(500).send('Error sending confirmation email');
         }
         console.log('Email sent: ' + info.response);
         res.send('Registration successful and email sent!');

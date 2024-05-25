@@ -1,3 +1,5 @@
+//const { response } = require("express");
+
 document.addEventListener("DOMContentLoaded", function() {
     // Countdown Timer Script
     var endDate = new Date("2024-11-15T20:30:00");
@@ -20,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("hours").textContent = hours;
             document.getElementById("minutes").textContent = minutes;
             document.getElementById("seconds").textContent = seconds;
+            //console.log({ days, hours, minutes, seconds });
         } catch (error) {
             console.error(error);
             document.getElementById("countdown").textContent = "Countdown unavailable.";
@@ -34,15 +37,29 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         var name = document.getElementById('name').value;
         var email = document.getElementById('email').value;
-        var phoneNumber = document.getElementById("PhoneNumber").value;
-        var nationality = document.getElementById("Nationality").value;
+        var phoneNumber = document.getElementById("phoneNumber").value;
+        var nationality = document.getElementById("nationality").value;
         var message = '';
 
-        if (name === '' || email === '' || phoneNumber == '' || Nationality == '') {
+        if (name === '' || email === '' || phoneNumber === '' || nationality === '') {
             message = 'All fields are required.';
         } else if (!/\S+@\S+\.\S+/.test(email)) {
             message = 'Please enter a valid email address.';
         } else {
+            fetch('/register', {
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+            body : JSON.stringify({name, email, phoneNumber, nationality}),
+        })
+        .then(response => response.text())
+        .then(date => {
+        document.getElementById('formMessage').textContent = data;
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            }),
             message = 'Registration successful!';
         }
 
