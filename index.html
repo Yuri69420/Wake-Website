@@ -1,36 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>WAKE - Accueil</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-    </style>
+    <head>
+        <title>WAKE - Accueil</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="WAKE is a multicultural event hosted by IMT. Join us for a day full of fun and activities.">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    
 </head>
 <body>
     <header>
+        <nav>
+            <ul class="navbar">
+                <li><a href="#general-presentation">General Presentation</a></li>
+                <li><a href="#pictures">Pictures</a></li>
+                <li><a href="#registration">Registration</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
         <h1>
             <img src="wake.jpg" alt="logo wake" width="90" height="100"> Wake Accueil
         </h1>
     </header>
 
-    <section>
+    <section id="general-presentation">
         <h1>Presentation</h1>
         <p>The wake is a multicultural event hosted by the IMT sponsored by</p>
+        <div id="videoContainer">
+            <p>Loading video...</p>
+            <video width="320" height="240" controls>
+                <source src="Wake%20teaser.mp4" type="video/mp4" onload="hideloadingIndicator()">
+            </video>
+        </div>
+        <h2>Mot de Sponsor</h2>
+        <p></p>
     </section>
-
-    <section>
-        <h2>Teaser of last year</h2>
-        <video width="320" height="240" controls>
-            <source src="Wake%20teaser.mp4" type="video/mp4">
-        </video>
+    <section id = "Pictures">
+        <h1>Pictures of the event</h1>
+        <p>Here you will find all the pictures of the event</p>
     </section>
-
-    <section>
-        <h1>Mot de Sponsor</h1>
+    <section id = "registrationForm">
+        <h1>Register for the Event</h1>
+        <form id="registrationForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <br>
+            <label for= "PhoneNumber">PhoneNumber:</label>
+            <input type="PhoneNumber" id = "PhoneNumber" required>
+            <br>
+            <label for ="Nationality">Nationality</label>
+            <input type = "Nationality" id = "Nationality" required>
+            <br>
+            <button type="submit">Register</button>
+        </form>
+        <p id="formMessage"></p>
+    </section>
+    <section id = "Contact">
+        <h1>Contact</h1>
+        <p>Contact us at the following email: 
+            <br>
+        You can also find us on the following social media Platforms:
+        
+        </p>
+        
     </section>
 
     <div class="countdown-container">
@@ -61,35 +97,30 @@
             </div>
         </div>
     </div>
+<script src = "scripts.js" ></script>/script>
+<script>
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var name = document.getElementById('name').value;
+        var email = document.getElementById('email').value;
+        var PhoneNumber = document.getElementById("PhoneNumber").value;
+        var Nationality = document.getElementById("Nationality").value;
 
-    <script>
-        var endDate = new Date("2024-11-15T20:30:00");
-
-        // Fonction pour mettre à jour le compte à rebours
-        function updateCountdown() {
-            var now = new Date();
-            var timeDiff = endDate.getTime() - now.getTime();
-
-            // Calcul des jours, heures, minutes et secondes restants
-            var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-            // Affichage du compte à rebours
-            document.getElementById("days").textContent = days;
-            document.getElementById("hours").textContent = hours;
-            document.getElementById("minutes").textContent = minutes;
-            document.getElementById("seconds").textContent = seconds;
-        }
-
-        // Mise à jour initiale du compte à rebours
-        updateCountdown();
-
-        // Mettre à jour le compte à rebours toutes les secondes
-        setInterval(updateCountdown, 1000);
-    </script>
-
-    <script>generateFooter(0)</script>
+        fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name: name, email: email, PhoneNumber : PhoneNumber, Nationality : Nationality }),
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('formMessage').textContent = data;
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+</script>
 </body>
 </html>
