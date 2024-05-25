@@ -10,7 +10,7 @@
     
 </head>
 <body>
-    <header>
+    <header role="banner">
         <nav>
             <ul class="navbar">
                 <li><a href="#general-presentation">General Presentation</a></li>
@@ -24,23 +24,24 @@
         </h1>
     </header>
 
-    <section id="general-presentation">
+    <section aria-labelledby="general-presentation" id="general-presentation">
         <h1>Presentation</h1>
         <p>The wake is a multicultural event hosted by the IMT sponsored by</p>
         <div id="videoContainer">
             <p>Loading video...</p>
-            <video width="320" height="240" controls>
-                <source src="Wake%20teaser.mp4" type="video/mp4" onload="hideloadingIndicator()">
+            <video width="320" height="240" autoplay >
+                <source src="Wake teaser.mp4" type="video/mp4" onload="hideloadingIndicator()"-->
+        
             </video>
         </div>
         <h2>Mot de Sponsor</h2>
         <p></p>
     </section>
-    <section id = "Pictures">
+    <section id = "pictures">
         <h1>Pictures of the event</h1>
         <p>Here you will find all the pictures of the event</p>
     </section>
-    <section id = "registrationForm">
+    <section id = "registration">
         <h1>Register for the Event</h1>
         <form id="registrationForm">
             <label for="name">Name:</label>
@@ -59,7 +60,7 @@
         </form>
         <p id="formMessage"></p>
     </section>
-    <section id = "Contact">
+    <section id = "contact">
         <h1>Contact</h1>
         <p>Contact us at the following email: 
             <br>
@@ -122,5 +123,17 @@
         });
     });
 </script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(function(registration) {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch(function(error) {
+                console.error('Service Worker registration failed:', error);
+            });
+    }
+</script>
+
 </body>
 </html>

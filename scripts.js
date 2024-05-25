@@ -34,11 +34,11 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         var name = document.getElementById('name').value;
         var email = document.getElementById('email').value;
-        var PhoneNumber = document.getElementById("PhoneNumber").value;
-        var Nationality = document.getElementById("Nationality").value;
+        var phoneNumber = document.getElementById("PhoneNumber").value;
+        var nationality = document.getElementById("Nationality").value;
         var message = '';
 
-        if (name === '' || email === '') {
+        if (name === '' || email === '' || phoneNumber == '' || Nationality == '') {
             message = 'All fields are required.';
         } else if (!/\S+@\S+\.\S+/.test(email)) {
             message = 'Please enter a valid email address.';
@@ -52,6 +52,21 @@ document.addEventListener("DOMContentLoaded", function() {
     // Video Loading Indicator Script
     function hideLoadingIndicator() {
         document.getElementById('videoContainer').innerHTML = '';
+    }
+    function validatePhoneNumber(phoneNumber) {
+        // Regular expressions for matching both formats
+        var internationalFormatRegex = /^\+\d{2}\s\d{1,2}\s\d{2}\s\d{2}\s\d{2}\s\d{2}$/;
+        var localFormatRegex = /^\d{2}\s\d{2}\s\d{2}\s\d{2}\s\d{2}\s\d{2}$/;
+    
+        if (internationalFormatRegex.test(phoneNumber)) {
+            return true;
+        } else if (localFormatRegex.test(phoneNumber)) {
+            // Transform local format to international format
+            phoneNumber = '+33 ' + phoneNumber.substring(1); // Assuming French numbers for the transformation
+            return true;
+        } else {
+            return false;
+        }
     }
 
     document.querySelector('video').addEventListener('loadeddata', hideLoadingIndicator);
