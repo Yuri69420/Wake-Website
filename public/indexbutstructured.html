@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>WAKE - Accueil</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="WAKE is a multicultural event hosted by IMT. Join us for a day full of fun and activities.">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+<header>
+    <nav>
+        <ul class="navbar">
+            <li><a href="#general-presentation">General Presentation</a></li>
+            <li><a href="pictures.html">Pictures</a></li>
+            <li><a href="registration.html">Registration</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+    <h1>
+        <img src="wake.jpg" alt="logo wake" width="90" height="100"> Wake Accueil
+    </h1>
+</header>
+<section id="general-presentation">
+    <h1>Presentation</h1>
+    <p>The wake is a multicultural event hosted by the IMT sponsored by Kelio for internationals by internationals
+<br>
+The event takes hold on 2 days and a half where participants are met by two parties and many sports competition
+<br>
+
+    </p>
+    <div id="videoContainer">
+        <p>Loading video...</p>
+        <video width="320" height="240" controls>
+            <source src="Wake%20teaser.mp4" type="video/mp4" onload="hideloadingIndicator()">
+        </video>
+    </div>
+    <h2>Mot de Sponsor</h2>
+    <p> Kelio has said about the event the following: </p>
+</section>
+<div class="countdown-container">
+    <div class="countdown-img">
+        <!-- Image or content goes here -->
+    </div>
+    <div class="row g-0 content">
+        <div class="col text-center">
+            <h2 class="countdown-heading">WAKE is Starting in...</h2>
+            <div id="countdown" class="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-value" id="days"></span>
+                    <span class="countdown-label">Jours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="hours"></span>
+                    <span class="countdown-label">Heures</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="minutes"></span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="seconds"></span>
+                    <span class="countdown-label">Secondes</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src = "scripts.js" ></script>/script>
+<script>
+document.getElementById('registrationForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var name = document.getElementById('name').value;
+    var email = document.getElementById('email').value;
+    var PhoneNumber = document.getElementById("phoneNumber").value;
+    var Nationality = document.getElementById("nationality").value;
+
+    fetch('/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: name, email: email, PhoneNumber : PhoneNumber, Nationality : Nationality }),
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('formMessage').textContent = data;
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+});
+</script>
+</body>
+</html>
+

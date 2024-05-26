@@ -6,20 +6,18 @@ const XLSX = require('xlsx');
 const path = require('path');
 
 const app = express();
-const PORT = 8000;
+const PORT = 9000;
 
-// Middleware
+// Middleware to serve static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Middleware to parse URL-encoded and JSON request bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Serve static files (your HTML, CSS, JS)
-app.use(express.static('public'));
-
-// Handle form submission
+// Route to handle form submission
 app.post('/register', (req, res) => {
     const { name, email, phoneNumber, nationality } = req.body;
-    console.log("phone is " + phoneNumber);
-    console.log("nat is "+nationality);
 
     // Append to Excel file
     const filePath = path.join(__dirname, 'registrations.xlsx');
@@ -31,11 +29,11 @@ app.post('/register', (req, res) => {
             worksheet = workbook.Sheets[workbook.SheetNames[0]];
         } else {
             workbook = XLSX.utils.book_new();
-            worksheet = XLSX.utils.aoa_to_sheet([['Name', 'Phone Number', 'Nationality', 'Email']]);
+            worksheet = XLSX.utils.aoa_to_sheet([['Name', 'Email', 'Phone Number', 'Nationality']]);
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Registrations');
         }
 
-        const newRow = [name, phoneNumber, nationality, email];
+        const newRow = [name, email, phoneNumber, nationality];
         XLSX.utils.sheet_add_aoa(worksheet, [newRow], { origin: -1 });
 
         XLSX.writeFile(workbook, filePath);
@@ -71,6 +69,11 @@ app.post('/register', (req, res) => {
         console.log('Email sent: ' + info.response);
         res.send('Registration successful and email sent!');
     });
+});
+
+// Default route to serve the HTML file
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start the server

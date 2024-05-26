@@ -22,7 +22,12 @@
 </header>
 <section id="general-presentation">
     <h1>Presentation</h1>
-    <p>The wake is a multicultural event hosted by the IMT sponsored by</p>
+    <p>The wake is a multicultural event hosted by the IMT sponsored by Kelio for internationals by internationals
+<br>
+The event takes hold on 2 days and a half where participants are met by two parties and many sports competition
+<br>
+
+    </p>
     <div id="videoContainer">
         <p>Loading video...</p>
         <video width="320" height="240" controls>
@@ -30,7 +35,7 @@
         </video>
     </div>
     <h2>Mot de Sponsor</h2>
-    <p></p>
+    <p> Kelio has said about the event the following: </p>
 </section>
 <div class="countdown-container">
     <div class="countdown-img">
@@ -66,8 +71,8 @@ document.getElementById('registrationForm').addEventListener('submit', function(
     event.preventDefault();
     var name = document.getElementById('name').value;
     var email = document.getElementById('email').value;
-    var PhoneNumber = document.getElementById("PhoneNumber").value;
-    var Nationality = document.getElementById("Nationality").value;
+    var PhoneNumber = document.getElementById("phoneNumber").value;
+    var Nationality = document.getElementById("nationality").value;
 
     fetch('/register', {
         method: 'POST',

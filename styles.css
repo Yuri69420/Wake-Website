@@ -84,3 +84,12 @@ section {
     font-size: 1em;
     color: #777;
 }
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+    }
+
+    .navbar li {
+        margin-bottom: 10px;
+    }
+}

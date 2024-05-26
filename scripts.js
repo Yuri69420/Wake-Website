@@ -1,5 +1,3 @@
-//const { response } = require("express");
-
 document.addEventListener("DOMContentLoaded", function() {
     // Countdown Timer Script
     var endDate = new Date("2024-11-15T20:30:00");
@@ -22,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("hours").textContent = hours;
             document.getElementById("minutes").textContent = minutes;
             document.getElementById("seconds").textContent = seconds;
-            //console.log({ days, hours, minutes, seconds });
         } catch (error) {
             console.error(error);
             document.getElementById("countdown").textContent = "Countdown unavailable.";
@@ -32,38 +29,78 @@ document.addEventListener("DOMContentLoaded", function() {
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    // Form Validation Script
+    // Form Validation and Submission Script
     document.getElementById('registrationForm').addEventListener('submit', function(event) {
         event.preventDefault();
         var name = document.getElementById('name').value;
         var email = document.getElementById('email').value;
-        var phoneNumber = document.getElementById("phoneNumber").value;
-        var nationality = document.getElementById("nationality").value;
+        var phoneNumber = document.getElementById('phoneNumber').value;
+        var nationality = document.getElementById('nationality').value;
         var message = '';
 
         if (name === '' || email === '' || phoneNumber === '' || nationality === '') {
             message = 'All fields are required.';
         } else if (!/\S+@\S+\.\S+/.test(email)) {
             message = 'Please enter a valid email address.';
-        } else {
+        } else if (!validatePhoneNumber(phoneNumber)){
+
+        }else {
+            document.getElementById('formMessage').textContent = 'Submitting...';
             fetch('/register', {
-                method : 'POST',
-                headers : {
-                    'Content-Type' : 'application/json'
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
-            body : JSON.stringify({name, email, phoneNumber, nationality}),
-        })
-        .then(response => response.text())
-        .then(date => {
-        document.getElementById('formMessage').textContent = data;
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            }),
+                body: JSON.stringify({ name, email, phoneNumber, nationality }),
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('formMessage').textContent = data;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
             message = 'Registration successful!';
         }
 
         document.getElementById('formMessage').textContent = message;
+    });
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var name = document.getElementById('contactName').value;
+        var email = document.getElementById('contactEmail').value;
+        var messageContent = document.getElementById('message').value;
+        var message = '';
+    
+        if (name === '' || email === '' || messageContent === '') {
+            message = 'All fields are required.';
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            message = 'Please enter a valid email address.';
+        } else {
+            // Show loading indicator
+            document.getElementById('contactFormMessage').textContent = 'Sending message...';
+    
+            fetch('/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, email, messageContent }),
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('contactFormMessage').textContent = data;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                document.getElementById('contactFormMessage').textContent = 'Error sending message.';
+            });
+    
+            message = 'Message sent successfully!';
+        }
+    
+        document.getElementById('contactFormMessage').textContent = message;
     });
 
     // Video Loading Indicator Script
@@ -71,19 +108,8 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('videoContainer').innerHTML = '';
     }
     function validatePhoneNumber(phoneNumber) {
-        // Regular expressions for matching both formats
-        var internationalFormatRegex = /^\+\d{2}\s\d{1,2}\s\d{2}\s\d{2}\s\d{2}\s\d{2}$/;
-        var localFormatRegex = /^\d{2}\s\d{2}\s\d{2}\s\d{2}\s\d{2}\s\d{2}$/;
-    
-        if (internationalFormatRegex.test(phoneNumber)) {
-            return true;
-        } else if (localFormatRegex.test(phoneNumber)) {
-            // Transform local format to international format
-            phoneNumber = '+33 ' + phoneNumber.substring(1); // Assuming French numbers for the transformation
-            return true;
-        } else {
-            return false;
-        }
+        var phoneRegex = /^\+?[1-9]\d{1,14}$/; // International format
+        return phoneRegex.test(phoneNumber);
     }
 
     document.querySelector('video').addEventListener('loadeddata', hideLoadingIndicator);
