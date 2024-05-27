@@ -34,12 +34,15 @@
         <h2>Mot de Sponsor</h2>
         <p></p>
     </section>
-    <section id=" Schedule">
+
+    <section id="schedule">
         <h1>Event Schedule</h1>
-    <p>Details about the event's timings and activities.</p>
-    <ul>
-        <li>20:00 - </li>
-    </ul>
+        <p>Details about the event's timings and activities.</p>
+        <ul>
+            <li>20:00 - Opening Ceremony</li>
+            <li>21:00 - Guest Speaker</li>
+            <li>22:00 - Networking Session</li>
+        </ul>
     </section>
 
     <section id="gallery">
@@ -51,7 +54,6 @@
             <img src="image3.jpg" alt="Event Picture 3">
         </div>
     </section>
-   
 
     <section id="registration">
         <h1>Register for the Event</h1>
@@ -74,26 +76,34 @@
     </section>
 
     <section id="contact">
-        <h1>Contact</h1>
-        <p>Contact us at the following email: contact@wakeevent.com</p>
-        <p>You can also find us on the following social media platforms:</p>
+        <h1>Contact Us</h1>
+        <form id="contactForm">
+            <label for="contactName">Name:</label>
+            <input type="text" id="contactName" name="contactName" required>
+            <br>
+            <label for="contactEmail">Email:</label>
+            <input type="email" id="contactEmail" name="contactEmail" required>
+            <br>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
+            <br>
+            <button type="submit">Send Message</button>
+        </form>
+        <p id="contactFormMessage"></p>
     </section>
 
     <div class="countdown-container">
-        <div class="countdown-img">
-            <!-- Image or content goes here -->
-        </div>
         <div class="row g-0 content">
             <div class="col text-center">
                 <h2 class="countdown-heading">WAKE is Starting in...</h2>
                 <div id="countdown" class="countdown">
                     <div class="countdown-item">
                         <span class="countdown-value" id="days"></span>
-                        <span class="countdown-label">Jours</span>
+                        <span class="countdown-label">Days</span>
                     </div>
                     <div class="countdown-item">
                         <span class="countdown-value" id="hours"></span>
-                        <span class="countdown-label">Heures</span>
+                        <span class="countdown-label">Hours</span>
                     </div>
                     <div class="countdown-item">
                         <span class="countdown-value" id="minutes"></span>
@@ -101,7 +111,7 @@
                     </div>
                     <div class="countdown-item">
                         <span class="countdown-value" id="seconds"></span>
-                        <span class="countdown-label">Secondes</span>
+                        <span class="countdown-label">Seconds</span>
                     </div>
                 </div>
             </div>

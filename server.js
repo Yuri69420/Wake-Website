@@ -4,9 +4,12 @@ const nodemailer = require('nodemailer');
 const fs = require('fs');
 const XLSX = require('xlsx');
 const path = require('path');
+const sqlite3 = require('sqlite3').verbose();
+require('dotenv').config(); // To use environment variables
 
 const app = express();
-const PORT = 9000;
+const PORT = 8080;
+const db = new sqlite3.Database('registrations.db');
 
 // Middleware to serve static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -18,6 +21,16 @@ app.use(bodyParser.json());
 // Route to handle form submission
 app.post('/register', (req, res) => {
     const { name, email, phoneNumber, nationality } = req.body;
+
+    // Add to Database
+    db.run(`INSERT INTO registrations (name, email, phoneNumber, nationality) VALUES (?, ?, ?, ?)`, [name, email, phoneNumber, nationality], function(err) {
+        if (err) {
+            console.error('Error inserting into database:', err);
+            return res.status(500).send('Error saving registration');
+        }
+
+        console.log('Successfully inserted into database');
+    });
 
     // Append to Excel file
     const filePath = path.join(__dirname, 'registrations.xlsx');
@@ -49,13 +62,13 @@ app.post('/register', (req, res) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'your-email@gmail.com',
-            pass: 'your-email-password'
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
         }
     });
 
     const mailOptions = {
-        from: 'your-email@gmail.com',
+        from: process.env.EMAIL_USER,
         to: email,
         subject: 'Registration Confirmation',
         text: `Hi ${name},\n\nThank you for registering for the event. We look forward to seeing you!\n\nBest regards,\nEvent Team`

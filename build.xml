@@ -1,0 +1,45 @@
+<project name="MyWebApp" default="build" basedir=".">
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="web.dir" value="web"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="war.dir" value="war"/>
+    <property name="war.file" value="${war.dir}/my-webapp.war"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${war.dir}"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${war.dir}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}">
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="package" depends="compile">
+        <copy todir="${build.dir}/WEB-INF">
+            <fileset dir="${web.dir}/WEB-INF"/>
+        </copy>
+        <copy todir="${build.dir}">
+            <fileset dir="${web.dir}" excludes="WEB-INF/**"/>
+        </copy>
+        <war destfile="${war.file}" webxml="${build.dir}/WEB-INF/web.xml">
+            <fileset dir="${build.dir}"/>
+            <lib dir="${lib.dir}"/>
+        </war>
+    </target>
+
+    <target name="build" depends="clean, package"/>
+</project>

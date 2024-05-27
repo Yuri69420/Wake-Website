@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>WAKE - Accueil</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="WAKE is a multicultural event hosted by IMT. Join us for a day full of fun and activities.">
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    
+<head>
+    <title>WAKE - Accueil</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="WAKE is a multicultural event hosted by IMT. Join us for a day full of fun and activities.">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <header role="banner">
@@ -20,7 +18,7 @@
             </ul>
         </nav>
         <h1>
-            <img src="wake.jpg" alt="logo wake" width="90" height="100"> Wake Accueil
+            <img src="img/wake.jpg" alt="logo wake" width="90" height="100"> Wake Accueil
         </h1>
     </header>
 
@@ -29,19 +27,35 @@
         <p>The wake is a multicultural event hosted by the IMT sponsored by</p>
         <div id="videoContainer">
             <p>Loading video...</p>
-            <video width="320" height="240" autoplay >
-                <source src="Wake teaser.mp4" type="video/mp4" onload="hideloadingIndicator()"-->
-        
+            <video width="320" height="240" autoplay>
+                <source src="video/Waketeaser.mp4" type="video/mp4" onload="hideloadingIndicator()">
             </video>
         </div>
         <h2>Mot de Sponsor</h2>
         <p></p>
     </section>
-    <section id = "pictures">
-        <h1>Pictures of the event</h1>
-        <p>Here you will find all the pictures of the event</p>
+
+    <section id="schedule">
+        <h1>Event Schedule</h1>
+        <p>Details about the event's timings and activities.</p>
+        <ul>
+            <li>20:00 - Opening Ceremony</li>
+            <li>21:00 - Guest Speaker</li>
+            <li>22:00 - Networking Session</li>
+        </ul>
     </section>
-    <section id = "registration">
+
+    <section id="gallery">
+        <h1>Event Gallery</h1>
+        <p>Pictures and videos from past events.</p>
+        <div class="gallery">
+            <img src="img/image1.jpg" alt="Event Picture 1">
+            <img src="img/image2.jpg" alt="Event Picture 2">
+            <img src="img/image3.jpg" alt="Event Picture 3">
+        </div>
+    </section>
+
+    <section id="registration">
         <h1>Register for the Event</h1>
         <form id="registrationForm">
             <label for="name">Name:</label>
@@ -50,41 +64,46 @@
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
             <br>
-            <label for= "PhoneNumber">PhoneNumber:</label>
-            <input type="text" id = "phoneNumber" required>
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" required>
             <br>
-            <label for ="Nationality">Nationality</label>
-            <input type = "text" id = "nationality" required>
+            <label for="nationality">Nationality:</label>
+            <input type="text" id="nationality" name="nationality" required>
             <br>
             <button type="submit">Register</button>
         </form>
         <p id="formMessage"></p>
     </section>
-    <section id = "contact">
-        <h1>Contact</h1>
-        <p>Contact us at the following email: 
+
+    <section id="contact">
+        <h1>Contact Us</h1>
+        <form id="contactForm">
+            <label for="contactName">Name:</label>
+            <input type="text" id="contactName" name="contactName" required>
             <br>
-        You can also find us on the following social media Platforms:
-        
-        </p>
-        
+            <label for="contactEmail">Email:</label>
+            <input type="email" id="contactEmail" name="contactEmail" required>
+            <br>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
+            <br>
+            <button type="submit">Send Message</button>
+        </form>
+        <p id="contactFormMessage"></p>
     </section>
 
     <div class="countdown-container">
-        <div class="countdown-img">
-            <!-- Image or content goes here -->
-        </div>
         <div class="row g-0 content">
             <div class="col text-center">
                 <h2 class="countdown-heading">WAKE is Starting in...</h2>
                 <div id="countdown" class="countdown">
                     <div class="countdown-item">
                         <span class="countdown-value" id="days"></span>
-                        <span class="countdown-label">Jours</span>
+                        <span class="countdown-label">Days</span>
                     </div>
                     <div class="countdown-item">
                         <span class="countdown-value" id="hours"></span>
-                        <span class="countdown-label">Heures</span>
+                        <span class="countdown-label">Hours</span>
                     </div>
                     <div class="countdown-item">
                         <span class="countdown-value" id="minutes"></span>
@@ -92,59 +111,24 @@
                     </div>
                     <div class="countdown-item">
                         <span class="countdown-value" id="seconds"></span>
-                        <span class="countdown-label">Secondes</span>
+                        <span class="countdown-label">Seconds</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-<script src = "scripts.js"></script> script>
-<script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/service-worker.js')
-            .then(function(registration) {
-                console.log('Service Worker registered with scope:', registration.scope);
-            })
-            .catch(function(error) {
-                console.error('Service Worker registration failed:', error);
-            });
-    }
-</script>
-<script>
-     document.getElementById('registrationForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        var name = document.getElementById('name').value;
-        var email = document.getElementById('email').value;
-        var phoneNumber = document.getElementById("phoneNumber").value;
-        var nationality = document.getElementById("nationality").value;
-        var message = '';
 
-        if (name === '' || email === '' || phoneNumber === '' || nationality === '') {
-            message = 'All fields are required.';
-        } else if (!/\S+@\S+\.\S+/.test(email)) {
-            message = 'Please enter a valid email address.';
-        } else {
-            fetch('/register', {
-                method : 'POST',
-                headers : {
-                    'Content-Type' : 'application/json'
-                },
-            body : JSON.stringify({name, email, phoneNumber, nationality}),
-        })
-        .then(response => response.text())
-        .then(date => {
-        document.getElementById('formMessage').textContent = data;
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            }),
-            message = 'Registration successful!';
+    <script src="js/scripts.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(function(registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                })
+                .catch(function(error) {
+                    console.error('Service Worker registration failed:', error);
+                });
         }
-
-        document.getElementById('formMessage').textContent = message;
-    });
-
-</script>
-
+    </script>
 </body>
 </html>
