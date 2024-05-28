@@ -55,9 +55,7 @@
         </div>
     </section>
 
-    <section id="registration">
-        <h1>Register for the Event</h1>
-        <form id="registrationForm" netlify>
+        <form id="registrationForm" name="registration" method="POST" data-netlify="true">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
             <br>
@@ -73,7 +71,7 @@
             <button type="submit">Register</button>
         </form>
         <p id="formMessage"></p>
-    </section>
+  
 
     <section id="contact">
         <h1>Contact Us</h1>
