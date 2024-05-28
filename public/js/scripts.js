@@ -30,87 +30,51 @@ document.addEventListener("DOMContentLoaded", function() {
     setInterval(updateCountdown, 1000);
 
     // Form Validation and Submission Script
-    document.getElementById('registrationForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        var name = document.getElementById('name').value;
-        var email = document.getElementById('email').value;
-        var phoneNumber = document.getElementById('phoneNumber').value;
-        var nationality = document.getElementById('nationality').value;
-        var message = '';
-        console.log(phoneNumber);
+    function handleFormSubmission(formId, messageElementId) {
+        document.getElementById(formId).addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(event.target);
+            var messageElement = document.getElementById(messageElementId);
 
-        if (name === '' || email === '' || phoneNumber === '' || nationality === '') {
-            message = 'All fields are required.';
-        } else if (!/\S+@\S+\.\S+/.test(email)) {
-            message = 'Please enter a valid email address.';
-        } else if (!validatePhoneNumber(phoneNumber)) {
-            message = 'Please enter a valid phone number.';
-        } else {
-            document.getElementById('formMessage').textContent = 'Submitting...';
-            fetch('/register', {
+            if ([...formData.values()].some(value => value === '')) {
+                messageElement.textContent = 'All fields are required.';
+                return;
+            }
+
+            if (formId === 'registrationForm' && !validatePhoneNumber(formData.get('phoneNumber'))) {
+                messageElement.textContent = 'Please enter a valid phone number.';
+                return;
+            }
+
+            messageElement.textContent = 'Submitting...';
+
+            fetch('/', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email, phoneNumber, nationality }),
+                body: formData,
             })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('formMessage').textContent = data;
+            .then(response => {
+                if (response.ok) {
+                    messageElement.textContent = 'Submission successful!';
+                    event.target.reset();
+                } else {
+                    messageElement.textContent = 'An error occurred. Please try again.';
+                }
             })
             .catch((error) => {
                 console.error('Error:', error);
-                document.getElementById('formMessage').textContent = 'Error registering.';
+                messageElement.textContent = 'Error submitting form.';
             });
+        });
+    }
 
-            message = 'Registration successful!';
-        }
-
-        document.getElementById('formMessage').textContent = message;
-    });
-
-    document.getElementById('contactForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        var name = document.getElementById('contactName').value;
-        var email = document.getElementById('contactEmail').value;
-        var messageContent = document.getElementById('message').value;
-        var message = '';
-
-        if (name === '' || email === '' || messageContent === '') {
-            message = 'All fields are required.';
-        } else if (!/\S+@\S+\.\S+/.test(email)) {
-            message = 'Please enter a valid email address.';
-        } else {
-            // Show loading indicator
-            document.getElementById('contactFormMessage').textContent = 'Sending message...';
-
-            fetch('/contact', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email, messageContent }),
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('contactFormMessage').textContent = data;
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                document.getElementById('contactFormMessage').textContent = 'Error sending message.';
-            });
-
-            message = 'Message sent successfully!';
-        }
-
-        document.getElementById('contactFormMessage').textContent = message;
-    });
+    handleFormSubmission('registrationForm', 'formMessage');
+    handleFormSubmission('contactForm', 'contactFormMessage');
 
     // Video Loading Indicator Script
     function hideLoadingIndicator() {
         document.getElementById('videoContainer').innerHTML = '';
     }
-    
+
     function validatePhoneNumber(phoneNumber) {
         var phoneRegex = /^\+?[1-9]\d{1,14}$/; // International format
         return phoneRegex.test(phoneNumber);

@@ -55,7 +55,13 @@
         </div>
     </section>
 
-        <form id="registrationForm" name="registration" method="POST" data-netlify="true">
+    <section id="registration">
+        <h1>Register for the Event</h1>
+        <form id="registrationForm" name="registration" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="registration">
+            <p class="hidden">
+                <label>Don’t fill this out if you're human: <input name="bot-field"></label>
+            </p>
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
             <br>
@@ -71,11 +77,15 @@
             <button type="submit">Register</button>
         </form>
         <p id="formMessage"></p>
-  
+    </section>
 
     <section id="contact">
         <h1>Contact Us</h1>
-        <form id="contactForm" name="contact" method="POST" data-netlify="true">
+        <form id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="contact">
+            <p class="hidden">
+                <label>Don’t fill this out if you're human: <input name="bot-field"></label>
+            </p>
             <label for="contactName">Name:</label>
             <input type="text" id="contactName" name="contactName" required>
             <br>
