@@ -12,7 +12,7 @@
         <nav>
             <ul class="navbar">
                 <li><a href="#general-presentation">General Presentation</a></li>
-                <li><a href="#gallery">Pictures</a></li>
+                <li><a href="#pictures">Pictures</a></li>
                 <li><a href="#registration">Registration</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -28,7 +28,7 @@
         <div id="videoContainer">
             <p>Loading video...</p>
             <video width="320" height="240" autoplay>
-                <source src="video/Waketeaser.mp4" type="video/mp4" onload="hideloadingIndicator()">
+                <source src="video/Waketeaser.mp4" type="video/mp4">
             </video>
         </div>
         <h2>Mot de Sponsor</h2>
@@ -57,7 +57,7 @@
 
     <section id="registration">
         <h1>Register for the Event</h1>
-        <form id="registrationForm">
+        <form id="registrationForm" name="registration" method="POST" data-netlify="true">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
             <br>
@@ -77,7 +77,7 @@
 
     <section id="contact">
         <h1>Contact Us</h1>
-        <form id="contactForm">
+        <form id="contactForm" name="contact" method="POST" data-netlify="true">
             <label for="contactName">Name:</label>
             <input type="text" id="contactName" name="contactName" required>
             <br>
